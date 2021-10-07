@@ -120,12 +120,13 @@ jobs:
         shell: bash
         run: |
           mkdir build
+          mkdir llvm
           CC=clang CXX=clang++ cmake -B build -S llvm-project/llvm -G Ninja \
-            -DCMAKE_INSTALL_PREFIX=$HOME/install \
+            -DCMAKE_INSTALL_PREFIX=$HOME/llvm \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_C_COMPILER_LAUNCHER=ccache \
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-            -DLLVM_ENABLE_PROJECTS="llvm;lld;clang;clang-tools-extra" \
+            -DLLVM_ENABLE_PROJECTS="llvm;clang;clang-tools-extra" \
             -DLLVM_ENABLE_LLD=TRUE \
             -DLLVM_ENABLE_LTO=FALSE \
             -DLLVM_PARALLEL_LINK_JOBS=1
@@ -139,7 +140,6 @@ jobs:
       - name: Create LLVM Tarball
         shell: bash
         run: |
-          mv install llvm
           tar -c llvm | xz -4e > ${{ matrix.package }}.tar.xz
 
       - uses: actions/upload-artifact@v2
