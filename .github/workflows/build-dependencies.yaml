@@ -35,27 +35,27 @@ jobs:
       - name: Install vcpkg on linux
         if: ${{ matrix.os == 'ubuntu-latest' }}
         shell: bash
-        run:
+        run: |
           ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
           echo "VCPKG_TRIPLET=x64-linux" >> $GITHUB_ENV
           
       - name: Install vcpkg on macos
         if: ${{ matrix.os == 'macos-latest' }}
         shell: bash
-        run:
+        run: |
           ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
           echo "VCPKG_TRIPLET=x64-osx" >> $GITHUB_ENV
       
       - name: Install vcpkg on windows
         if: ${{ matrix.os == 'windows-latest' }}
         shell: bash
-        run:
+        run: |
           ./vcpkg/bootstrap-vcpkg.bat -disableMetrics
           echo "VCPKG_TRIPLET=x64-windows" >> $GITHUB_ENV 
 
       - name: Install ${{ matrix.package }}
         shell: bash
-        run:
+        run: |
           ./vcpkg/vcpkg install --triplet=${{ env.VCPKG_TRIPLET }} ${{ matrix.package }}
           ./vcpkg/vcpkg export  --triplet=${{ env.VCPKG_TRIPLET }} ${{ matrix.package }} \
             --output-dir=. \
