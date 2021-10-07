@@ -33,7 +33,7 @@ jobs:
           path: |
             ~/vcpkg/vcpkg
             ~/vcpkg/vcpkg.exe
-          key: vcpkg-${{ runner.os }}-${{ hashFiles('vcpkg/.git/refs/HEAD') }}
+          key: vcpkg-${{ runner.os }}-${{ hashFiles('vcpkg/.git/HEAD') }}
 
       - name: Install vcpkg on unix
         if: ${{ !steps.vcpkgcache.outputs.cache-hit && matrix.os != 'windows-latest' }}
