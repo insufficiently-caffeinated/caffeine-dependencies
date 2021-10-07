@@ -139,7 +139,7 @@ jobs:
           mv install llvm
           tar -c llvm | xz -4e > ${{ matrix.package }}.tar.xz
 
-            - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.package }}-${{ matrix.os }}.tar.xz
           path: ${{ matrix.package }}.tar.xz
