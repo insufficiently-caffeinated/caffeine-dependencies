@@ -5,7 +5,7 @@ on:
 
 env:
   LLVM_COMMIT: 'llvmorg-13.0.0'
-  VCPKG_COMMIT: '2021.05.12'
+  VCPKG_COMMIT: 'ac030b40d53f820bad26148ed6ee46d6fd0f183d'
 
 jobs:
   vcpkg:
