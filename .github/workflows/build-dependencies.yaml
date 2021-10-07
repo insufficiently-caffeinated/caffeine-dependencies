@@ -36,14 +36,16 @@ jobs:
           key: vcpkg-${{ runner.os }}-${{ hashFiles('vcpkg/.git/refs/HEAD') }}
 
       - name: Install vcpkg on unix
-        if: ${{ steps.vcpkgcache.outputs.cache-hit != true && matrix.os != 'windows-latest' }}
+        if: ${{ !steps.vcpkgcache.outputs.cache-hit && matrix.os != 'windows-latest' }}
         shell: bash
-        run: ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
+        run: |
+          ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
       
       - name: Install vcpkg on windows
-        if: ${{ steps.vcpkgcache.outputs.cache-hit != true && matrix.os == 'windows-latest' }}
+        if: ${{ !steps.vcpkgcache.outputs.cache-hi && matrix.os == 'windows-latest' }}
         shell: bash
-        run: ./vcpkg/bootstrap-vcpkg.bat -disableMetrics
+        run: |
+          ./vcpkg/bootstrap-vcpkg.bat -disableMetrics
 
        - name: Setup vcpkg triplet
         if: ${{ matrix.os == 'ubuntu-latest' }}
