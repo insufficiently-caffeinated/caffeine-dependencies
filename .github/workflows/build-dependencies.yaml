@@ -140,6 +140,8 @@ jobs:
       - name: Create LLVM Tarball
         shell: bash
         run: |
+          mv $HOME/llvm llvm
+          ls -lah
           tar -c llvm | xz -4e > ${{ matrix.package }}.tar.xz
 
       - uses: actions/upload-artifact@v2
