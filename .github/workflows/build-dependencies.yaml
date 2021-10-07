@@ -78,7 +78,7 @@ jobs:
       - name: Install ${{ matrix.package }}
         shell: bash
         run: |
-          ./vcpkg/vcpkg install --triplet=${{ env.VCPKG_TRIPLET }} ${{ matrix.package }}
+          ./vcpkg/vcpkg install --triplet=${{ env.VCPKG_TRIPLET }} ${{ matrix.package }} --debug
           ./vcpkg/vcpkg export  --triplet=${{ env.VCPKG_TRIPLET }} ${{ matrix.package }} \
             --output-dir=. \
             --output=${{ matrix.package }} \
