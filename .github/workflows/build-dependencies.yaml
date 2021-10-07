@@ -42,7 +42,7 @@ jobs:
           ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
       
       - name: Install vcpkg on windows
-        if: ${{ !steps.vcpkgcache.outputs.cache-hit && matrix.os == 'windows-latest' }}
+        if: ${{ matrix.os == 'windows-latest' }}
         shell: bash
         run: |
           ./vcpkg/bootstrap-vcpkg.bat -disableMetrics
