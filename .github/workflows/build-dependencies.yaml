@@ -20,8 +20,6 @@ jobs:
           - magic-enum
           - immer
       fail-fast: false
-    env:
-      VCPKG_DEFAULT_BINARY_CACHE: archive
     steps:
       - uses: actions/checkout@v2
         with:
@@ -38,9 +36,17 @@ jobs:
           key: vcpkg-${{ matrix.os }}-${{ hashFiles('vcpkg/.git/HEAD') }}
 
       - uses: actions/cache@v2
+        if: ${{ matrix.os != 'windows-latest' }}
         with:
           path: |
-            ~/archive
+            ~/.cache/vcpkg
+          key: vcpkg-binaries-${{ matrix.os }}-${{ hashfiles('vcpkg/.git/HEAD') }}
+        
+      - uses: actions/cache@v2
+        if: ${{ matrix.os == 'windows-latest' }}
+        with:
+          path: |
+            %LOCALAPPDATA%\vcpkg
           key: vcpkg-binaries-${{ matrix.os }}-${{ hashfiles('vcpkg/.git/HEAD') }}
 
       - name: Install vcpkg on unix
