@@ -103,35 +103,35 @@ jobs:
 
       - uses: lukka/get-cmake@latest
       
-      - name: Setup LLVM CMake Build
-        shell: bash
-        run: |
-          mkdir build
-          mkdir llvm
-          CC=clang CXX=clang++ cmake -B build -S llvm-project/llvm -G Ninja \
-            -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/llvm \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-            -DLLVM_ENABLE_PROJECTS="llvm;clang;clang-tools-extra" \
-            -DLLVM_ENABLE_LLD=TRUE \
-            -DLLVM_ENABLE_LTO=FALSE \
-            -DLLVM_PARALLEL_LINK_JOBS=1
+      # - name: Setup LLVM CMake Build
+      #   shell: bash
+      #   run: |
+      #     mkdir build
+      #     mkdir llvm
+      #     CC=clang CXX=clang++ cmake -B build -S llvm-project/llvm -G Ninja \
+      #       -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/llvm \
+      #       -DCMAKE_BUILD_TYPE=Release \
+      #       -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+      #       -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+      #       -DLLVM_ENABLE_PROJECTS="llvm;clang;clang-tools-extra" \
+      #       -DLLVM_ENABLE_LLD=TRUE \
+      #       -DLLVM_ENABLE_LTO=FALSE \
+      #       -DLLVM_PARALLEL_LINK_JOBS=1
 
-      - name: Build and install LLVM
-        shell: bash
-        run: |
-          cd build
-          cmake --build . --target install
+      # - name: Build and install LLVM
+      #   shell: bash
+      #   run: |
+      #     cd build
+      #     cmake --build . --target install
 
-      - name: Create LLVM Tarball
-        shell: bash
-        run: |
-          tar -c llvm | xz -T0 -0 > ${{ matrix.package }}-${{ matrix.os }}.tar.xz
+      # - name: Create LLVM Tarball
+      #   shell: bash
+      #   run: |
+      #     tar -c llvm | xz -T0 -0 > ${{ matrix.package }}-${{ matrix.os }}.tar.xz
 
-      - uses: actions/upload-artifact@v2
-        with:
-          path: ${{ matrix.package }}-${{ matrix.os }}.tar.xz
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     path: ${{ matrix.package }}-${{ matrix.os }}.tar.xz
 
   release:
     name: release
