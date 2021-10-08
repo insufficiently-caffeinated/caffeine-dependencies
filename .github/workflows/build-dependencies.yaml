@@ -42,7 +42,7 @@ jobs:
         if: ${{ matrix.os != 'windows-latest' }}
         with:
           path: |
-            ~/.cache/vcpkg
+            ${{ env.HOME }}/.cache/vcpkg
           key: vcpkg-binaries-${{ matrix.os }}-${{ hashfiles('vcpkg/.git/HEAD') }}
         
       - uses: actions/cache@v2
