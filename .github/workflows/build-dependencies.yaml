@@ -168,5 +168,3 @@ jobs:
         shell: bash
         run: |
           ls **
-
-  create_release:
