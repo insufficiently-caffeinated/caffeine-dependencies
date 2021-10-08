@@ -32,6 +32,11 @@ jobs:
           - immer
       fail-fast: false
     steps:
+      - name: actions/checkout@v2
+        with:
+          repository: 'microsoft/vcpkg'
+          ref: ${{ env.VCPKG_COMMIT }}
+
       - name: Setup vcpkg triplet
         if: ${{ matrix.os == 'ubuntu-latest' }}
         shell: bash
