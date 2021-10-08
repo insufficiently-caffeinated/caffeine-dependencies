@@ -66,7 +66,11 @@ jobs:
       - name: Export ${{ matrix.package }}
         shell: bash
         run: |
-          ./${{ runner.workspace }}/vcpkg/vcpkg export  --triplet=${{ env.VCPKG_TRIPLET }} ${{ matrix.package }} \
+          ls ${{ runner.workspace }}
+          echo ======================
+          ls ${{ runner.workspace }}/*
+          echo ======================
+          ${{ runner.workspace }}/vcpkg/vcpkg export  --triplet=${{ env.VCPKG_TRIPLET }} ${{ matrix.package }} \
             --output-dir=. \
             --output=${{ matrix.package }} \
             --raw
