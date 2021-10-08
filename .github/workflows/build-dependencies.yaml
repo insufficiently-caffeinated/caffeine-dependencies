@@ -58,7 +58,7 @@ jobs:
       - uses: lukka/run-vcpkg@v7
         with:
           vcpkgArguments: ${{ matrix.package }} --debug
-          vcpkgDirectory: ${{ github.workspace }}/vcpkg/
+          vcpkgDirectory: ${{ runner.workspace }}/vcpkg/
           vcpkgTriplet: ${{ env.VCPKG_TRIPLET }}
           vcpkgGitCommitId: ${{ env.VCPKG_COMMIT }}
           appendedCacheKey: ${{ matrix.os }}-${{ matrix.package }}
