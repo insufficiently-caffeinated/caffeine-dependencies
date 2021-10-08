@@ -32,7 +32,7 @@ jobs:
           - immer
       fail-fast: false
     steps:
-      - name: actions/checkout@v2
+      - uses: actions/checkout@v2
         with:
           repository: 'microsoft/vcpkg'
           ref: ${{ env.VCPKG_COMMIT }}
