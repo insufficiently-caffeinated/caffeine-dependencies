@@ -26,10 +26,10 @@ jobs:
           # - windows-latest
         package:
           - fmt
-          - z3
-          - capnproto
-          - magic-enum
-          - immer
+          # - z3
+          # - capnproto
+          # - magic-enum
+          # - immer
       fail-fast: false
     steps:
       - name: Setup vcpkg triplet
@@ -61,11 +61,7 @@ jobs:
       # Note: Explicitly using no specific shell here
       - name: Export ${{ matrix.package }}
         run: >
-          ${{ runner.workspace }}/vcpkg/vcpkg export ${{ matrix.package }}
-            --triplet=${{ env.VCPKG_TRIPLET }}
-            --output-dir=.
-            --output=${{ matrix.package }}
-            --raw
+          ${{ runner.workspace }}/vcpkg/vcpkg export ${{ matrix.package }} --triplet=${{ env.VCPKG_TRIPLET }} --output-dir=. --output=${{ matrix.package }}  --raw
 
       - name: Create tarball
         shell: bash
