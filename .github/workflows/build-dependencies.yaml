@@ -151,9 +151,7 @@ jobs:
       - name: List all artifacts
         shell: bash
         run: |
-          pwd
-          ls
-          ls packages
+          ls ${{ runner.workspace }}/packages
 
       - name: Export date
         shell: bash
@@ -163,6 +161,6 @@ jobs:
       - uses: softprops/action-gh-release@v1
         # if: ${{ inputs.manual }}
         with:
-          files: packages/*.tar.xz
+          files: ${{ runner.workspace}}/packages/*.tar.xz
           name: caffeine-deps-${{ env.RELEASE_DATE }}
           draft: true
