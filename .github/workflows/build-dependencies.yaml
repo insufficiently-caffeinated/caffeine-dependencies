@@ -2,6 +2,13 @@ name: build-dependencies
 
 on:
   push:
+    inputs:
+      manual:
+        default: false
+  workflow_dispatch:
+    inputs:
+      manual:
+        default: true
 
 env:
   LLVM_COMMIT: 'llvmorg-13.0.0'
@@ -148,3 +155,18 @@ jobs:
         with:
           name: ${{ matrix.package }}-${{ matrix.os }}.tar.xz
           path: ${{ matrix.package }}.tar.xz
+
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    needs:
+      - vcpkg
+      - llvm
+    steps:
+      - uses: actions/download-artifact@v2
+      - name: List all artifacts
+        shell: bash
+        run: |
+          ls **
+
+  create_release:
