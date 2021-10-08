@@ -57,12 +57,11 @@ jobs:
 
       - uses: lukka/run-vcpkg@v7
         with:
-          setupOnly: true
-          vcpkgDirectory: vcpkg
-          appendedCacheKey: ${{ matrix.os }}-${{ matrix.package }}
+          vcpkgArguments: ${{ matrix.package }} --debug
+          vcpkgDirectory: ${{ runner.workspace}}/vcpkg/
           vcpkgTriplet: ${{ env.VCPKG_TRIPLET }}
           vcpkgGitCommitId: ${{ env.VCPKG_COMMIT }}
-          vcpkgArguments: ${{ matrix.package }} --debug
+          appendedCacheKey: ${{ matrix.os }}-${{ matrix.package }}
 
       - name: Export ${{ matrix.package }}
         shell: bash
