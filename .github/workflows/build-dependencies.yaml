@@ -76,6 +76,7 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
+          name: packages
           path: ${{ matrix.package }}-${{ matrix.os }}.tar.xz
 
   llvm:
@@ -131,6 +132,7 @@ jobs:
 
       # - uses: actions/upload-artifact@v2
       #   with:
+      #     name: packages
       #     path: ${{ matrix.package }}-${{ matrix.os }}.tar.xz
 
   release:
@@ -142,9 +144,20 @@ jobs:
     steps:
       - uses: actions/download-artifact@v2
         with:
-          path: artifacts
+          path: '~'
 
       - name: List all artifacts
         shell: bash
         run: |
-          for f in **; do; echo $f; done
+          ls packages
+
+      - name: Export date
+        shell: bash
+        run: |
+          echo RELEASE_DATE=$(date '+%Y-%m-%d-%H-%M') >> $GITHUB_ENV
+
+      - name: Create release actions
+        if: ${{ inputs.manual }}
+        shell: bash
+        run: |
+          echo dummy
