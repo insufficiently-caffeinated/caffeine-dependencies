@@ -58,7 +58,7 @@ jobs:
       - uses: lukka/run-vcpkg@v7
         with:
           vcpkgArguments: ${{ matrix.package }} --debug
-          vcpkgDirectory: ${{ runner.workspace }}/vcpkg/
+          vcpkgDirectory: ${{ github.workspace }}/vcpkg/
           vcpkgTriplet: ${{ env.VCPKG_TRIPLET }}
           vcpkgGitCommitId: ${{ env.VCPKG_COMMIT }}
           appendedCacheKey: ${{ matrix.os }}-${{ matrix.package }}
@@ -109,7 +109,7 @@ jobs:
           mkdir build
           mkdir llvm
           CC=clang CXX=clang++ cmake -B build -S llvm-project/llvm -G Ninja \
-            -DCMAKE_INSTALL_PREFIX=$HOME/llvm \
+            -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/llvm \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_C_COMPILER_LAUNCHER=ccache \
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
@@ -127,9 +127,7 @@ jobs:
       - name: Create LLVM Tarball
         shell: bash
         run: |
-          mv $HOME/llvm llvm
-          ls -lah
-          tar -c llvm | xz -T0 -2e > ${{ matrix.package }}-${{ matrix.os }}.tar.xz
+          tar -c llvm | xz -T0 -2 > ${{ matrix.package }}-${{ matrix.os }}.tar.xz
 
       - uses: actions/upload-artifact@v2
         with:
