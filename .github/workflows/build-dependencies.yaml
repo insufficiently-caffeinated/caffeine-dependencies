@@ -32,12 +32,6 @@ jobs:
           - immer
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: microsoft/vcpkg
-          ref: ${{ env.VCPKG_COMMIT }}
-          path: vcpkg
-
       - name: Setup vcpkg triplet
         if: ${{ matrix.os == 'ubuntu-latest' }}
         shell: bash
@@ -63,11 +57,11 @@ jobs:
           appendedCacheKey: ${{ matrix.os }}-${{ matrix.package }}
           vcpkgTriplet: ${{ env.VCPKG_TRIPLET }}
           vcpkgGitCommitId: ${{ env.VCPKG_COMMIT }}
+          vcpkgArguments: ${{ matrix.package }} --debug
 
-      - name: Install ${{ matrix.package }}
+      - name: Export ${{ matrix.package }}
         shell: bash
         run: |
-          ./vcpkg/vcpkg install --triplet=${{ env.VCPKG_TRIPLET }} ${{ matrix.package }} --debug
           ./vcpkg/vcpkg export  --triplet=${{ env.VCPKG_TRIPLET }} ${{ matrix.package }} \
             --output-dir=. \
             --output=${{ matrix.package }} \
