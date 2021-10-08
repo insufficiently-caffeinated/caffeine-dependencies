@@ -151,15 +151,16 @@ jobs:
       - name: List all artifacts
         shell: bash
         run: |
-          echo **
+          ls packages
 
       - name: Export date
         shell: bash
         run: |
           echo RELEASE_DATE=$(date '+%Y-%m-%d-%H-%M') >> $GITHUB_ENV
 
-      - name: Create release actions
-        if: ${{ inputs.manual }}
-        shell: bash
-        run: |
-          echo dummy
+      - uses: softprops/action-gh-release@v1
+        # if: ${{ inputs.manual }}
+        with:
+          files: packages/*.tar.xz
+          name: caffeine-deps-${{ env.RELEASE_DATE }}
+          draft: true
