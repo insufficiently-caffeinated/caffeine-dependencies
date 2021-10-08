@@ -65,11 +65,11 @@ jobs:
 
       # Note: Explicitly using no specific shell here
       - name: Export ${{ matrix.package }}
-        run: |
-          ./vcpkg/vcpkg export ${{ matrix.package }} \
-            --triplet=${{ env.VCPKG_TRIPLET }} \
-            --output-dir=. \
-            --output=${{ matrix.package }} \
+        run: >
+          ./vcpkg/vcpkg export ${{ matrix.package }}
+            --triplet=${{ env.VCPKG_TRIPLET }}
+            --output-dir=.
+            --output=${{ matrix.package }}
             --raw
 
       - name: Create tarball
