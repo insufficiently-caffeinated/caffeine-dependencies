@@ -151,6 +151,8 @@ jobs:
       - name: List all artifacts
         shell: bash
         run: |
+          pwd
+          ls
           ls packages
 
       - name: Export date
