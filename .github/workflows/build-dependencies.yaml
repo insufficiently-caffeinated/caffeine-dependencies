@@ -22,14 +22,14 @@ jobs:
       matrix:
         os: 
           - ubuntu-latest
-          - macos-latest
+          # - macos-latest
           - windows-latest
         package:
-          - fmt
-          - z3
-          - capnproto
+          # - fmt
+          # - z3
+          # - capnproto
           - magic-enum
-          - immer
+          # - immer
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
@@ -58,20 +58,33 @@ jobs:
       - uses: lukka/run-vcpkg@v7
         with:
           vcpkgArguments: ${{ matrix.package }} --debug
-          vcpkgDirectory: ${{ runner.workspace }}/vcpkg/
+          vcpkgDirectory: ${{ runner.workspace }}
           vcpkgTriplet: ${{ env.VCPKG_TRIPLET }}
           vcpkgGitCommitId: ${{ env.VCPKG_COMMIT }}
           appendedCacheKey: ${{ matrix.os }}-${{ matrix.package }}
 
       - name: Export ${{ matrix.package }}
+        if: ${{ matrix.os != 'windows-latest' }}
         shell: bash
         run: |
-          ${{ runner.workspace }}/vcpkg/vcpkg export ${{ matrix.package }} \
+          ./vcpkg export ${{ matrix.package }} \
+            --triplet=${{ env.VCPKG_TRIPLET }} \
+            --output-dir=. \
+            --output=${{ matrix.package }} \
+            --raw
+      - name: Export ${{ matrix.package }}
+        if: ${{ matrix.os == 'windows-latest' }}
+        shell: pwsh
+        run: |
+          ./vcpkg export ${{ matrix.package }} \
             --triplet=${{ env.VCPKG_TRIPLET }} \
             --output-dir=. \
             --output=${{ matrix.package }} \
             --raw
 
+      - name: Create tarball
+        shell: bash
+        run: |
           tar c ${{ matrix.package }} | xz -T0 -9e > ${{ matrix.package }}-${{ matrix.os }}.tar.xz
 
       - uses: actions/upload-artifact@v2
@@ -84,14 +97,17 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: 
-          - ubuntu-latest
-          - macos-latest
-          - windows-latest
+        os: []
+          # - ubuntu-latest
+          # - macos-latest
+          # - windows-latest
         package:
           - llvm
       fail-fast: false
     steps:
+      - name: Fail
+        shell: bash
+        run: 'false'
       - uses: actions/checkout@v2
         with:
           repository: llvm/llvm-project
@@ -128,7 +144,7 @@ jobs:
       - name: Create LLVM Tarball
         shell: bash
         run: |
-          tar -c llvm | xz -T0 -9e > ${{ matrix.package }}-${{ matrix.os }}.tar.xz
+          tar -c llvm | xz -T0 -0 > ${{ matrix.package }}-${{ matrix.os }}.tar.xz
 
       - uses: actions/upload-artifact@v2
         with:
