@@ -26,10 +26,10 @@ jobs:
           # - windows-latest
         package:
           - fmt
-          # - z3
-          # - capnproto
-          # - magic-enum
-          # - immer
+          - z3
+          - capnproto
+          - magic-enum
+          - immer
       fail-fast: false
     steps:
       - name: Setup vcpkg triplet
@@ -86,8 +86,6 @@ jobs:
           - llvm
       fail-fast: false
     steps:
-      - run: 'false'
-
       - uses: actions/checkout@v2
         with:
           repository: llvm/llvm-project
