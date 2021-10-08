@@ -62,6 +62,7 @@ jobs:
           vcpkgDirectory: ${{ github.workspace }}/vcpkg
           appendedCacheKey: ${{ matrix.os }}-${{ matrix.package }}
           vcpkgTriplet: ${{ env.VCPKG_TRIPLET }}
+          vcpkgGitCommitId: ${{ env.VCPKG_COMMIT }}
 
       - name: Install ${{ matrix.package }}
         shell: bash
