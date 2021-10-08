@@ -72,7 +72,7 @@ jobs:
             --output=${{ matrix.package }} \
             --raw
 
-          tar c ${{ matrix.package }} | xz -T0 -4e > ${{ matrix.package }}-${{ matrix.os }}.tar.xz
+          tar c ${{ matrix.package }} | xz -T0 -9e > ${{ matrix.package }}-${{ matrix.os }}.tar.xz
 
       - uses: actions/upload-artifact@v2
         with:
@@ -128,7 +128,7 @@ jobs:
       - name: Create LLVM Tarball
         shell: bash
         run: |
-          tar -c llvm | xz -T0 -0 > ${{ matrix.package }}-${{ matrix.os }}.tar.xz
+          tar -c llvm | xz -T0 -9e > ${{ matrix.package }}-${{ matrix.os }}.tar.xz
 
       - uses: actions/upload-artifact@v2
         with:
