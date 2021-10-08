@@ -58,7 +58,7 @@ jobs:
       - uses: lukka/run-vcpkg@v7
         with:
           vcpkgArguments: ${{ matrix.package }} --debug
-          vcpkgDirectory: vcpkg/
+          vcpkgDirectory: ${{ runner.workspace }}/vcpkg/
           vcpkgTriplet: ${{ env.VCPKG_TRIPLET }}
           vcpkgGitCommitId: ${{ env.VCPKG_COMMIT }}
           appendedCacheKey: ${{ matrix.os }}-${{ matrix.package }}
@@ -66,7 +66,7 @@ jobs:
       - name: Export ${{ matrix.package }}
         shell: bash
         run: |
-          ./vcpkg/vcpkg export  --triplet=${{ env.VCPKG_TRIPLET }} ${{ matrix.package }} \
+          ./${{ runner.workspace }}/vcpkg/vcpkg export  --triplet=${{ env.VCPKG_TRIPLET }} ${{ matrix.package }} \
             --output-dir=. \
             --output=${{ matrix.package }} \
             --raw
