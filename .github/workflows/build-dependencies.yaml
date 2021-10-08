@@ -72,7 +72,7 @@ jobs:
             --output=${{ matrix.package }} \
             --raw
 
-          tar c ${{ matrix.package }} | xz -T0 -9e > ${{ matrix.package }}-${{ matrix.os }}.tar.xz
+          tar c ${{ matrix.package }} | xz -T0 -4e > ${{ matrix.package }}-${{ matrix.os }}.tar.xz
 
       - uses: actions/upload-artifact@v2
         with:
@@ -141,15 +141,17 @@ jobs:
     needs:
       - vcpkg
       - llvm
+    permissions:
+      contents: write
     steps:
       - uses: actions/download-artifact@v2
         with:
-          path: '~'
+          path: ${{ runner.workspace }}
 
       - name: List all artifacts
         shell: bash
         run: |
-          ls packages
+          echo **
 
       - name: Export date
         shell: bash
