@@ -32,11 +32,6 @@ jobs:
           - immer
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: 'microsoft/vcpkg'
-          ref: ${{ env.VCPKG_COMMIT }}
-
       - name: Setup vcpkg triplet
         if: ${{ matrix.os == 'ubuntu-latest' }}
         shell: bash
@@ -66,7 +61,7 @@ jobs:
       # Note: Explicitly using no specific shell here
       - name: Export ${{ matrix.package }}
         run: >
-          ./vcpkg/vcpkg export ${{ matrix.package }}
+          ${{ runner.workspace }}/vcpkg/vcpkg export ${{ matrix.package }}
             --triplet=${{ env.VCPKG_TRIPLET }}
             --output-dir=.
             --output=${{ matrix.package }}
@@ -95,6 +90,8 @@ jobs:
           - llvm
       fail-fast: false
     steps:
+      - run: 'false'
+
       - uses: actions/checkout@v2
         with:
           repository: llvm/llvm-project
