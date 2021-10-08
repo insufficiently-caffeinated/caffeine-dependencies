@@ -109,7 +109,6 @@ jobs:
             -DCMAKE_C_COMPILER_LAUNCHER=ccache \
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -DLLVM_ENABLE_PROJECTS="llvm;clang;clang-tools-extra" \
-            -DLLVM_ENABLE_LLD=TRUE \
             -DLLVM_ENABLE_LTO=FALSE \
             -DLLVM_PARALLEL_LINK_JOBS=1
 
