@@ -72,7 +72,7 @@ jobs:
             --output=${{ matrix.package }} \
             --raw
 
-          tar c ${{ matrix.package }} | xz -4e > ${{ matrix.package }}.tar.xz
+          tar c ${{ matrix.package }} | xz -T0 -9e > ${{ matrix.package }}.tar.xz
 
       - uses: actions/upload-artifact@v2
         with:
@@ -130,7 +130,7 @@ jobs:
         run: |
           mv $HOME/llvm llvm
           ls -lah
-          tar -c llvm | xz -4e > ${{ matrix.package }}.tar.xz
+          tar -c llvm | xz -T0 -9e > ${{ matrix.package }}.tar.xz
 
       - uses: actions/upload-artifact@v2
         with:
