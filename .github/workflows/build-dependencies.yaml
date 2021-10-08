@@ -22,14 +22,14 @@ jobs:
       matrix:
         os: 
           - ubuntu-latest
-          # - macos-latest
-          - windows-latest
+          - macos-latest
+          # - windows-latest
         package:
-          # - fmt
-          # - z3
-          # - capnproto
+          - fmt
+          - z3
+          - capnproto
           - magic-enum
-          # - immer
+          - immer
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
@@ -88,16 +88,13 @@ jobs:
     strategy:
       matrix:
         os:
-          # - ubuntu-latest
-          # - macos-latest
-          - windows-latest
+          - ubuntu-latest
+          - macos-latest
+          # - windows-latest
         package:
           - llvm
       fail-fast: false
     steps:
-      - name: Fail
-        shell: bash
-        run: 'false'
       - uses: actions/checkout@v2
         with:
           repository: llvm/llvm-project
