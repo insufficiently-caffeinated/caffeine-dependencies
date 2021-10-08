@@ -72,12 +72,11 @@ jobs:
             --output=${{ matrix.package }} \
             --raw
 
-          tar c ${{ matrix.package }} | xz -T0 -2e > ${{ matrix.package }}.tar.xz
+          tar c ${{ matrix.package }} | xz -T0 -2e > ${{ matrix.package }}-${{ matrix.os }}.tar.xz
 
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.package }}-${{ matrix.os }}.tar.xz
-          path: ${{ matrix.package }}.tar.xz
+          path: ${{ matrix.package }}-${{ matrix.os }}.tar.xz
 
   llvm:
     name: build-${{ matrix.os }}-${{ matrix.package }}
@@ -130,12 +129,11 @@ jobs:
         run: |
           mv $HOME/llvm llvm
           ls -lah
-          tar -c llvm | xz -T0 -2e > ${{ matrix.package }}.tar.xz
+          tar -c llvm | xz -T0 -2e > ${{ matrix.package }}-${{ matrix.os }}.tar.xz
 
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.package }}-${{ matrix.os }}.tar.xz
-          path: ${{ matrix.package }}.tar.xz
+          path: ${{ matrix.package }}-${{ matrix.os }}.tar.xz
 
   release:
     name: release
