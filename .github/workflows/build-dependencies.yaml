@@ -143,7 +143,10 @@ jobs:
       - llvm
     steps:
       - uses: actions/download-artifact@v2
+        with:
+          path: artifacts
+
       - name: List all artifacts
         shell: bash
         run: |
-          ls **
+          ls artifacts
