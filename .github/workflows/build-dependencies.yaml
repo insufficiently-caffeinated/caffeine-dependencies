@@ -150,6 +150,7 @@ jobs:
         shell: bash
         run: |
           echo RELEASE_DATE=$(date '+%Y-%m-%d-%H-%M') >> $GITHUB_ENV
+          echo ${{ inputs.manual }}
 
       - uses: softprops/action-gh-release@v1
         if: ${{ inputs.manual == 'true' }}
