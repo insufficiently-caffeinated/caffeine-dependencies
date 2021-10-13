@@ -157,4 +157,5 @@ jobs:
         with:
           files: ${{ runner.workspace}}/packages/*.tar.xz
           name: caffeine-deps-${{ env.RELEASE_DATE }}
+          tag_name: caffeine-deps-${{ env.RELEASE_DATE }}
           draft: true
