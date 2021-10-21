@@ -37,8 +37,8 @@ jobs:
         run: |
           mkdir -p linux-install
           cd linux-git
-          make allmodconfig
-          make -j2 ARCH=${{ matrix.arch }} INSTALL_HDR_PATH=../linux-install
+          make -j2 ARCH=${{ matrix.arch }} allmodconfig
+          make -j2 ARCH=${{ matrix.arch }} INSTALL_HDR_PATH=../linux-install headers_install
 
       - name: Package linux headers
         shell: bash
