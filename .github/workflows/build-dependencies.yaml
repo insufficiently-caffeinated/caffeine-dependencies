@@ -43,7 +43,7 @@ jobs:
       - name: Package linux headers
         shell: bash
         run: |
-          tar -c linux-install | xz -T0 -4e linux-${{ matrix.arch }}.tar.xz
+          tar -c linux-install | xz -T0 -4e > linux-${{ matrix.arch }}.tar.xz
           
       - uses: actions/upload-artifact@v2
         with:
