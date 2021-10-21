@@ -13,127 +13,47 @@ on:
 env:
   LLVM_COMMIT: 'llvmorg-13.0.0'
   VCPKG_COMMIT: 'ac030b40d53f820bad26148ed6ee46d6fd0f183d'
+  LINUX_TAG: 'v5.14'
 
 jobs:
-  vcpkg:
-    name: build-${{ matrix.os }}-${{ matrix.package }}
-    runs-on: ${{ matrix.os }}
+  linux:
+    name: build-linux-${{ matrix.arch }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: 
-          - ubuntu-latest
-          - macos-latest
-          # - windows-latest
-        package:
-          - fmt
-          - z3
-          - capnproto
-          - magic-enum
-          - immer
-      fail-fast: false
-    steps:
-      - name: Setup vcpkg triplet
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        shell: bash
-        run: |
-          echo "VCPKG_TRIPLET=x64-linux" >> $GITHUB_ENV
-          
-      - name: Setup vcpkg triplet
-        if: ${{ matrix.os == 'macos-latest' }}
-        shell: bash
-        run: |
-          echo "VCPKG_TRIPLET=x64-osx" >> $GITHUB_ENV
-      
-      - name: Setup vcpkg triplet
-        if: ${{ matrix.os == 'windows-latest' }}
-        shell: bash
-        run: |
-          echo "VCPKG_TRIPLET=x64-windows" >> $GITHUB_ENV 
-
-      - uses: lukka/run-vcpkg@v7
-        with:
-          vcpkgArguments: ${{ matrix.package }} --debug
-          vcpkgDirectory: ${{ runner.workspace }}/vcpkg
-          vcpkgTriplet: ${{ env.VCPKG_TRIPLET }}
-          vcpkgGitCommitId: ${{ env.VCPKG_COMMIT }}
-          appendedCacheKey: ${{ matrix.os }}-${{ matrix.package }}
-
-      # Note: Explicitly using no specific shell here
-      - name: Export ${{ matrix.package }}
-        run: >
-          ${{ runner.workspace }}/vcpkg/vcpkg export ${{ matrix.package }} --triplet=${{ env.VCPKG_TRIPLET }} --output-dir=. --output=${{ matrix.package }}  --raw
-
-      - name: Create tarball
-        shell: bash
-        run: |
-          tar c ${{ matrix.package }} | xz -T0 -9e > ${{ matrix.package }}-${{ matrix.os }}.tar.xz
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: packages
-          path: ${{ matrix.package }}-${{ matrix.os }}.tar.xz
-
-  llvm:
-    name: build-${{ matrix.os }}-${{ matrix.package }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-          # - windows-latest
-        package:
-          - llvm
+        arch:
+          - i686
+          - arm
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
         with:
-          repository: llvm/llvm-project
-          ref: ${{ env.LLVM_COMMIT }}
-          path: llvm-project
+          repository: torvalds/linux
+          ref: ${{ env.LINUX_TAG }}
+          path: linux
 
-      - uses: hendrikmuhs/ccache-action@v1
-        with:
-          key: ccache-llvm-${{ matrix.os }}
-
-      - uses: lukka/get-cmake@latest
-      
-      - name: Setup LLVM CMake Build
+      - name: Install linux headers
         shell: bash
         run: |
-          mkdir build
-          mkdir llvm
-          CC=clang CXX=clang++ cmake -B build -S llvm-project/llvm -G Ninja \
-            -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/llvm \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-            -DLLVM_ENABLE_PROJECTS="llvm;clang;clang-tools-extra" \
-            -DLLVM_ENABLE_LTO=FALSE \
-            -DLLVM_PARALLEL_LINK_JOBS=1
+          mkdir -p linux-install
+          cd linux-git
+          make -j2 ARCH=${{ matrix.arch }} INSTALL_HDR_PATH=../linux-install
 
-      - name: Build and install LLVM
+      - name: Package linux headers
         shell: bash
         run: |
-          cd build
-          cmake --build . --target install
-
-      - name: Create LLVM Tarball
-        shell: bash
-        run: |
-          tar -c llvm | xz -T0 -0 > ${{ matrix.package }}-${{ matrix.os }}.tar.xz
-
+          tar -c linux | xz -T0 -4e linux-${{ matrix.arch }}.tar.xz
+          
       - uses: actions/upload-artifact@v2
         with:
           name: packages
-          path: ${{ matrix.package }}-${{ matrix.os }}.tar.xz
+          path: linux-${{ matrix.arch }}.tar.xz
 
   release:
     name: release
     runs-on: ubuntu-latest
     needs:
-      - vcpkg
-      - llvm
+      - linux
     permissions:
       contents: write
     steps:
