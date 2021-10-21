@@ -30,7 +30,7 @@ jobs:
         with:
           repository: torvalds/linux
           ref: ${{ env.LINUX_TAG }}
-          path: linux
+          path: linux-git
 
       - name: Install linux headers
         shell: bash
