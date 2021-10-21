@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         arch:
-          - i686
+          - i386
           - arm
       fail-fast: false
     steps:
