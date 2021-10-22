@@ -60,6 +60,7 @@ jobs:
       CC: gclang
       CXX: gclang++
     steps:
+      - uses: actions/checkout@v2
       - uses: actions/setup-go@v2
         with:
           go-version: '^1.16.6'
@@ -94,7 +95,7 @@ jobs:
       - name: Extract bitcode
         shell: bash
         run: |
-          for f in install/lib/*.a; do; get-bc -o ${f%.*}.bc $f; done
+          ./extract-bitcode.sh install/lib
 
       - name: Package linux headers
         shell: bash
