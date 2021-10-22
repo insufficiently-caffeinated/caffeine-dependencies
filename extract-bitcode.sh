@@ -1,7 +1,7 @@
 #!/bin/bash
 
-set -v
+set -x
 
-for f in "$1/*.a"; do
+for f in $1/*.a; do
     get-bc -o ${f%.*}.bc $f
 done
