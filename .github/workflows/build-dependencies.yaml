@@ -100,7 +100,7 @@ jobs:
       - name: Package linux headers
         shell: bash
         run: |
-          tar -c linux-install | xz -T0 -4e > musl.tar.xz
+          tar -c install | xz -T0 -4e > musl.tar.xz
           
       - uses: actions/upload-artifact@v2
         with:
