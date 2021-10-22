@@ -76,11 +76,19 @@ jobs:
           mv musl-${{ env.MUSL_VERSION }} musl
           mkdir -p install
 
-      - name: Build musl
+      - name: Configure
         run: |
           cd musl
           ./configure --prefix=../install --disable-shared
+
+      - name: Build
+        run: |
+          cd musl
           make -j2
+
+      - name: Install
+        run: |
+          cd musl
           make install
 
       - name: Extract bitcode
