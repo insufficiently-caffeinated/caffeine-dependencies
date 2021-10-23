@@ -3,5 +3,5 @@
 set -x
 
 for f in $1/*.a; do
-    get-bc -o ${f%.*}.bc $f
+    get-bc -l $LLVM_LINK_NAME -s -b -o ${f%.*}.bc $f
 done
