@@ -51,8 +51,8 @@ jobs:
       LLVM_CC_NAME: clang-12
       LLVM_CXX_NAME: clang++-12
       LLVM_LINK_NAME: llvm-link-12
-      CC: gclang
-      CXX: gclang++
+      CC: 'ccache gclang'
+      CXX: 'ccache gclang++''
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2
@@ -63,6 +63,10 @@ jobs:
         run: |
           sudo apt-get install -y ${{ env.LLVM_CC_NAME }}
           go get github.com/SRI-CSL/gllvm/cmd/...
+          
+      - uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: ccache-musl
 
       - name: Get musl source
         run: |
