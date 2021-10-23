@@ -1,10 +1,12 @@
 
 set(CMAKE_SYSROOT $ENV{WORKSPACE_DIR}/install)
 
-set(triplet x86_64-linux-unknown)
+set(triplet x86_64-unknown-linux-musl)
 
 set(CMAKE_C_COMPILER   $ENV{CC})
 set(CMAKE_CXX_COMPILER $ENV{CXX})
+set(CMAKE_C_COMPILER_TARGET   ${triplet})
+set(CMAKE_CXX_COMPILER_TARGET ${triplet})
 
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
