@@ -51,8 +51,8 @@ jobs:
       LLVM_CC_NAME: clang-12
       LLVM_CXX_NAME: clang++-12
       LLVM_LINK_NAME: llvm-link-12
-      CC: 'ccache gclang'
-      CXX: 'ccache gclang++'
+      CC: gclang
+      CXX: gclang++
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2
@@ -64,10 +64,6 @@ jobs:
           sudo apt-get install -y ${{ env.LLVM_CC_NAME }}
           go get github.com/SRI-CSL/gllvm/cmd/...
           
-      - uses: hendrikmuhs/ccache-action@v1
-        with:
-          key: ccache-musl
-
       - name: Get musl source
         run: |
           wget https://musl.libc.org/releases/musl-${{ env.MUSL_VERSION }}.tar.gz
@@ -119,6 +115,7 @@ jobs:
       LLVM_LINK_NAME: llvm-link-12
       CC: gclang
       CXX: gclang++
+      WORKSPACE_DIR: ${{ runner.workspace }}
     needs:
       - musl
     steps:
@@ -151,6 +148,8 @@ jobs:
         run: |
           mkdir -p build
           cmake -G Ninja -S llvm-project/llvm -B build \
+            -DCMAKE_TOOLCHAIN_FILE=../local-musl-toolchain.cmake \
+            -DCMAKE_SYSROOT=${{ runner.workspace }}/install \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_C_COMPILER_LAUNCHER=ccache \
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
