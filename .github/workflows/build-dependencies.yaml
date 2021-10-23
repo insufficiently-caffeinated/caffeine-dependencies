@@ -155,7 +155,7 @@ jobs:
             -DCMAKE_C_COMPILER_LAUNCHER=ccache \
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -DCMAKE_INSTALL_PREFIX=${{ runner.workspace }}/install \
-            -DLLVM_ENABLE_PROJECTS="libcxx;libcxxabi;clang" \
+            -DLLVM_ENABLE_PROJECTS="clang" \
             -DLIBCXXABI_ENABLE_EXCEPTIONS=ON \
             -DLIBCXX_ENABLE_EXCEPTIONS=ON \
             -DLIBCXX_ENABLE_THREADS=OFF \
