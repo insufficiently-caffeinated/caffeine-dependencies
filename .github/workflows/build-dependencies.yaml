@@ -98,11 +98,15 @@ jobs:
         run: |
           ./extract-bitcode.sh install/lib
 
-      - name: Package linux headers
+      - name: List included files
         shell: bash
         run: |
           find install -type f
-          tar -c install | xz -T0 -4e > musl.tar.xz
+
+      - name: Create package tarball
+        shell: bash
+        run: |
+          tar -c install | xz -T0 -9e > musl.tar.xz
           
       - uses: actions/upload-artifact@v2
         with:
