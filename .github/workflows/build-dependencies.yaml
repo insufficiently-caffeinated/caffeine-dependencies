@@ -106,12 +106,89 @@ jobs:
           name: packages
           path: musl.tar.xz
 
+  libcxx:
+    name: build-libcxx
+    runs-on: ubuntu-latest
+    env:
+      LLVM_CC_NAME: clang-12
+      LLVM_CXX_NAME: clang++-12
+      LLVM_LINK_NAME: llvm-link-12
+      CC: gclang
+      CXX: gclang++
+    needs:
+      - musl
+    uses:
+      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        with:
+          repository: llvm/llvm-project
+          ref: ${{ env.LLVM_COMMIT }}
+          path: llvm-project
+
+      - uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: ccache-libcxx
+
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.16.6'
+
+      - uses: actions/download-artifact@v2
+        with:
+          path: ${{ runner.workspace }}
+
+      - name: Install dependencies
+        run: |
+          apt-get install -y ninja-build
+          go get github.com/SRI-CSL/gllvm/cmd/...
+          tar xf ${{ runner.workspace }}/packages/musl.tar.xz
+      
+      - name: Configure LLVM
+        run: |
+          mkdir -p build
+          cmake -G Ninja -S llvm-project/llvm -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_INSTALL_PREFIX=${{ runner.workspace }}/install \
+            -DLLVM_ENABLE_PROJECTS="libcxx;libcxxabi;clang" \
+            -DLIBCXXABI_ENABLE_EXCEPTIONS=ON \
+            -DLIBCXX_ENABLE_EXCEPTIONS=ON \
+            -DLIBCXX_ENABLE_THREADS=OFF \
+            -DLIBCXX_HAS_PTHREAD_API=OFF \
+            -DLIBCXX_HAS_WIN32_API_THREAD_API=OFF \
+            -DLIBCXX_HAS_EXTERNAL_THREAD_API=OFF \
+            -DLIBCXX_BUILD_EXTERNAL_THREAD_LIBRARY=OFF \
+            -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi" \
+            -DLLVM_RUNTIME_DISTRIBUTION_COMPONENTS="libcxx;libcxxabi"
+
+      - name: Build LLVM
+        run: |
+          cd build
+          ninja distribution
+
+      - name: Install LLVM
+        run: |
+          cd build
+          ninja install-distribution
+
+      - name: Create package tarball
+        shell: bash
+        run: |
+          tar -c install | xz -T0 -9e > libcxx.tar.xz
+          
+      - uses: actions/upload-artifact@v2
+        with:
+          name: packages
+          path: libcxx.tar.xz
+
   release:
     name: release
     runs-on: ubuntu-latest
     needs:
       - linux
       - musl
+      - libcxx
     permissions:
       contents: write
     steps:
