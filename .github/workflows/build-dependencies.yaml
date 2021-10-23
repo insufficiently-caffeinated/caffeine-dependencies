@@ -52,7 +52,7 @@ jobs:
       LLVM_CXX_NAME: clang++-12
       LLVM_LINK_NAME: llvm-link-12
       CC: 'ccache gclang'
-      CXX: 'ccache gclang++''
+      CXX: 'ccache gclang++'
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2
