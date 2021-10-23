@@ -2,13 +2,6 @@ name: build-dependencies
 
 on:
   push:
-    inputs:
-      manual:
-        default: 'false'
-  workflow_dispatch:
-    inputs:
-      manual:
-        default: 'true'
 
 env:
   LLVM_COMMIT: 'llvmorg-13.0.0'
