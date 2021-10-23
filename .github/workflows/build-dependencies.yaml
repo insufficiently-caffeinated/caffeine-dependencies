@@ -131,7 +131,7 @@ jobs:
           echo ${{ inputs.manual }}
 
       - uses: softprops/action-gh-release@v1
-        if: false
+        if: github.ref == 'refs/heads/master'
         with:
           files: ${{ runner.workspace}}/packages/*.tar.xz
           name: caffeine-deps-${{ env.RELEASE_DATE }}
