@@ -117,7 +117,7 @@ jobs:
       CXX: gclang++
     needs:
       - musl
-    uses:
+    steps:
       - uses: actions/checkout@v2
       - uses: actions/checkout@v2
         with:
