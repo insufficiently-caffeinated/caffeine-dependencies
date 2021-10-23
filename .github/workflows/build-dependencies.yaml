@@ -143,7 +143,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          apt-get install -y ninja-build
+          sudo apt-get install -y ninja-build
           go get github.com/SRI-CSL/gllvm/cmd/...
           tar xf ${{ runner.workspace }}/packages/musl.tar.xz
       
