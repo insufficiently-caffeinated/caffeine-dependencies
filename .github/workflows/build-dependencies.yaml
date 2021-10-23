@@ -115,7 +115,6 @@ jobs:
       LLVM_LINK_NAME: llvm-link-12
       CC: gclang
       CXX: gclang++
-      WORKSPACE_DIR: ${{ runner.workspace }}
     needs:
       - musl
     steps:
@@ -143,6 +142,7 @@ jobs:
           sudo apt-get install -y ninja-build
           go get github.com/SRI-CSL/gllvm/cmd/...
           tar xf ${{ runner.workspace }}/packages/musl.tar.xz
+          echo WORKSPACE_DIR=${{ runner.workspace }} >> $GITHUB_ENV
       
       - name: Configure LLVM
         run: |
