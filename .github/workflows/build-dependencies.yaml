@@ -119,8 +119,6 @@ jobs:
         run: |
           mkdir -p build
           cmake -G Ninja -S llvm-project/llvm -B build \
-            -DCMAKE_TOOLCHAIN_FILE=../local-musl-toolchain.cmake \
-            -DCMAKE_SYSROOT=${{ runner.workspace }}/install \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_C_COMPILER_LAUNCHER=ccache \
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
@@ -135,6 +133,9 @@ jobs:
             -DLIBCXX_BUILD_EXTERNAL_THREAD_LIBRARY=OFF \
             -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi" \
             -DLLVM_RUNTIME_DISTRIBUTION_COMPONENTS="libcxx;libcxxabi"
+
+# -DCMAKE_TOOLCHAIN_FILE=../local-musl-toolchain.cmake \
+# -DCMAKE_SYSROOT=${{ runner.workspace }}/install \
 
       - name: Build LLVM
         run: |
