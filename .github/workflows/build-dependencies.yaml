@@ -10,40 +10,6 @@ env:
   LINUX_TAG: 'v5.14'
 
 jobs:
-  linux:
-    name: build-linux-${{ matrix.arch }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        arch:
-          - i386
-          - arm
-      fail-fast: false
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: torvalds/linux
-          ref: ${{ env.LINUX_TAG }}
-          path: linux-git
-
-      - name: Install linux headers
-        shell: bash
-        run: |
-          mkdir -p linux-install
-          cd linux-git
-          make -j2 ARCH=${{ matrix.arch }} allmodconfig
-          make -j2 ARCH=${{ matrix.arch }} INSTALL_HDR_PATH=../linux-install headers_install
-
-      - name: Package linux headers
-        shell: bash
-        run: |
-          tar -c linux-install | xz -T0 -4e > linux-${{ matrix.arch }}.tar.xz
-          
-      - uses: actions/upload-artifact@v2
-        with:
-          name: packages
-          path: linux-${{ matrix.arch }}.tar.xz
-
   musl:
     name: build-musl
     runs-on: ubuntu-latest
@@ -189,7 +155,6 @@ jobs:
     name: release
     runs-on: ubuntu-latest
     needs:
-      - linux
       - musl
       - libcxx
     permissions:
