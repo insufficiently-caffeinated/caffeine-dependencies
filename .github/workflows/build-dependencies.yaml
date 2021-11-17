@@ -110,6 +110,10 @@ jobs:
           go get github.com/SRI-CSL/gllvm/cmd/...
           tar xf ${{ runner.workspace }}/packages/musl.tar.xz
           echo WORKSPACE_DIR=${{ runner.workspace }} >> $GITHUB_ENV
+
+      - name: List current folder
+        run: |
+          ls -lah
       
       - name: Configure LLVM
         run: |
