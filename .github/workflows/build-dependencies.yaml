@@ -144,6 +144,7 @@ jobs:
       - name: Create package tarball
         shell: bash
         run: |
+          find install -type f
           tar -c install | xz -T0 -9e > libcxx.tar.xz
           
       - uses: actions/upload-artifact@v2
