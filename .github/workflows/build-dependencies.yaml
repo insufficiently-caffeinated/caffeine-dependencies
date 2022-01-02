@@ -74,8 +74,7 @@ jobs:
       - name: Apply patches
         run: |
           cd musl
-          git apply ../patches/musl/strlen.patch
-          cat src/string/strlen.c
+          patch -p1 < ../patches/musl/strlen.patch
           echo "Patches applied"
 
       - name: Configure
