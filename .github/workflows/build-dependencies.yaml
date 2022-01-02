@@ -53,8 +53,6 @@ jobs:
       LLVM_LINK_NAME: llvm-link-12
       CC: gclang
       CXX: gclang++
-      CFLAGS: "-fgnuc-version=0"
-      CPPFLAGS: "-fgnuc-version=0"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2
