@@ -75,6 +75,7 @@ jobs:
         run: |
           cd musl
           patch -p1 < ../patches/musl/strlen.patch
+          patch -p1 < ../patches/musl/errno.patch
           echo "Patches applied"
 
       - name: Configure
