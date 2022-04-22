@@ -62,7 +62,7 @@ jobs:
       - name: Setup dependencies
         run: |
           sudo apt-get install -y ${{ env.LLVM_CC_NAME }}
-          go get github.com/SRI-CSL/gllvm/cmd/...
+          GO111MODULE=off go get github.com/SRI-CSL/gllvm/cmd/...
 
       - name: Get musl source
         run: |
@@ -75,6 +75,7 @@ jobs:
         run: |
           cd musl
           patch -p1 < ../patches/musl/strlen.patch
+          patch -p1 < ../patches/musl/errno.patch
           echo "Patches applied"
 
       - name: Configure
