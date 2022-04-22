@@ -10,8 +10,8 @@ index 7f9d602..42cb11d 100644
 +
  int *__errno_location(void)
  {
--       return &__pthread_self()->errno_val;
-+       return &__errno_value;
+-	return &__pthread_self()->errno_val;
++	return &__errno_value;
  }
  
  weak_alias(__errno_location, ___errno_location);
